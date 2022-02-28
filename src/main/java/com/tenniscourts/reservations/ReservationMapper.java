@@ -9,7 +9,6 @@ public interface ReservationMapper {
 
     Reservation map(ReservationDTO source);
 
-    @InheritInverseConfiguration
     ReservationDTO map(Reservation source);
 
     @Mapping(target = "guest.id", source = "guestId")

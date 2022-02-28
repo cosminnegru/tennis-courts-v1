@@ -1,0 +1,563 @@
+swagger: '2.0'
+info:
+  description: Api Documentation
+  version: '1.0'
+  title: Api Documentation
+  termsOfService: urn:tos
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+host: localhost:8080
+basePath: /
+tags:
+  - name: guest-controller
+    description: Guest Controller
+  - name: reservation-controller
+    description: Reservation Controller
+  - name: schedule-controller
+    description: Schedule Controller
+  - name: tennis-court-controller
+    description: Tennis Court Controller
+paths:
+  /guests:
+    get:
+      tags:
+        - guest-controller
+      summary: Find all guests
+      operationId: findAllUsingGET
+      produces:
+        - '*/*'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GuestDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    post:
+      tags:
+        - guest-controller
+      summary: Create a new guest
+      operationId: addUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: guestDTO
+          description: guestDTO
+          required: true
+          schema:
+            $ref: '#/definitions/GuestDTO'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/GuestDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    put:
+      tags:
+        - guest-controller
+      summary: Update a guest
+      operationId: updateUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: guestDTO
+          description: guestDTO
+          required: true
+          schema:
+            $ref: '#/definitions/GuestDTO'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/GuestDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /guests/guest:
+    get:
+      tags:
+        - guest-controller
+      summary: Find guest by name
+      operationId: findByNameUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: name
+          in: query
+          description: name
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/GuestDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /guests/{id}:
+    get:
+      tags:
+        - guest-controller
+      summary: Find guest by id
+      operationId: findByIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/GuestDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    delete:
+      tags:
+        - guest-controller
+      summary: Delete a guest
+      operationId: deleteUsingDELETE
+      produces:
+        - '*/*'
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      deprecated: false
+  /reservations:
+    post:
+      tags:
+        - reservation-controller
+      summary: Book a reservation for a tennis court at a given date schedule
+      operationId: bookReservationUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: createReservationRequestDTO
+          description: createReservationRequestDTO
+          required: true
+          schema:
+            $ref: '#/definitions/CreateReservationRequestDTO'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /reservations/{reservationId}:
+    get:
+      tags:
+        - reservation-controller
+      summary: Find a reservation by id
+      operationId: findReservationUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: reservationId
+          in: path
+          description: reservationId
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ReservationDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    put:
+      tags:
+        - reservation-controller
+      summary: Cancel a reservation
+      operationId: cancelReservationUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: reservationId
+          in: path
+          description: reservationId
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ReservationDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /reservations/{reservationId}/schedules/{scheduleId}:
+    put:
+      tags:
+        - reservation-controller
+      summary: Reschedule a reservation
+      operationId: rescheduleReservationUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - name: reservationId
+          in: path
+          description: reservationId
+          required: true
+          type: integer
+          format: int64
+        - name: scheduleId
+          in: path
+          description: scheduleId
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ReservationDTO'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /schedules:
+    get:
+      tags:
+        - schedule-controller
+      summary: Find all the schedules between 2 dates
+      operationId: findSchedulesByDatesUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: endDate
+          in: query
+          description: endDate
+          required: true
+          type: string
+          format: date
+        - name: startDate
+          in: query
+          description: startDate
+          required: true
+          type: string
+          format: date
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ScheduleDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+    post:
+      tags:
+        - schedule-controller
+      summary: Create a schedule for a given tennis court
+      operationId: addScheduleTennisCourtUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: createScheduleRequestDTO
+          description: createScheduleRequestDTO
+          required: true
+          schema:
+            $ref: '#/definitions/CreateScheduleRequestDTO'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /schedules/{scheduleId}:
+    get:
+      tags:
+        - schedule-controller
+      summary: Find schedule by id
+      operationId: findByScheduleIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: scheduleId
+          in: path
+          description: scheduleId
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ScheduleDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /tennis-courts:
+    post:
+      tags:
+        - tennis-court-controller
+      summary: Add new tennis court
+      operationId: addTennisCourtUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - '*/*'
+      parameters:
+        - in: body
+          name: tennisCourtDTO
+          description: tennisCourtDTO
+          required: true
+          schema:
+            $ref: '#/definitions/TennisCourtDTO'
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /tennis-courts/{tennisCourtId}:
+    get:
+      tags:
+        - tennis-court-controller
+      summary: Get tennis court by id
+      operationId: findTennisCourtByIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: tennisCourtId
+          in: path
+          description: tennisCourtId
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TennisCourtDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /tennis-courts/{tennisCourtId}/schedules:
+    get:
+      tags:
+        - tennis-court-controller
+      summary: Get tennis courts with schedules
+      operationId: findTennisCourtWithSchedulesByIdUsingGET
+      produces:
+        - '*/*'
+      parameters:
+        - name: tennisCourtId
+          in: path
+          description: tennisCourtId
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TennisCourtDTO'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+definitions:
+  CreateReservationRequestDTO:
+    type: object
+    properties:
+      guestId:
+        type: integer
+        format: int64
+      scheduleId:
+        type: integer
+        format: int64
+    title: CreateReservationRequestDTO
+  CreateScheduleRequestDTO:
+    type: object
+    properties:
+      startDateTime:
+        type: string
+        format: date-time
+      tennisCourtId:
+        type: integer
+        format: int64
+    title: CreateScheduleRequestDTO
+  GuestDTO:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    title: GuestDTO
+  ReservationDTO:
+    type: object
+    properties:
+      guest:
+        $ref: '#/definitions/GuestDTO'
+      guestId:
+        type: integer
+        format: int64
+      id:
+        type: integer
+        format: int64
+      previousReservation:
+        $ref: '#/definitions/ReservationDTO'
+      refundValue:
+        type: number
+      reservationStatus:
+        type: string
+      schedule:
+        $ref: '#/definitions/ScheduleDTO'
+      scheduledId:
+        type: integer
+        format: int64
+      value:
+        type: number
+    title: ReservationDTO
+  ScheduleDTO:
+    type: object
+    properties:
+      endDateTime:
+        type: string
+        format: date-time
+      id:
+        type: integer
+        format: int64
+      startDateTime:
+        type: string
+        format: date-time
+      tennisCourt:
+        $ref: '#/definitions/TennisCourtDTO'
+      tennisCourtId:
+        type: integer
+        format: int64
+    title: ScheduleDTO
+  TennisCourtDTO:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      tennisCourtSchedules:
+        type: array
+        items:
+          $ref: '#/definitions/ScheduleDTO'
+    title: TennisCourtDTO

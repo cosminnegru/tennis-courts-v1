@@ -21,8 +21,6 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@ToString
 public class Guest extends BaseEntity<Long> {
 
   @Column
